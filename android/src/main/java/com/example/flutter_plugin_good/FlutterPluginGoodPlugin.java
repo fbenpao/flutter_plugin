@@ -1,9 +1,9 @@
 package com.example.flutter_plugin_good;
 
-import android.os.Build;
 
+import android.hardware.Camera;
+import android.hardware.Camera.Parameters;
 import androidx.annotation.NonNull;
-
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -18,6 +18,9 @@ public class FlutterPluginGoodPlugin implements FlutterPlugin, MethodCallHandler
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
   /// when the Flutter Engine is detached from the Activity
   private MethodChannel channel;
+  private Camera camera;
+  private Parameters parameters;
+  public boolean hasClosed = true; // 定义开关状态，状态为false，打开状态，状态为true，关闭状态
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
@@ -28,6 +31,18 @@ public class FlutterPluginGoodPlugin implements FlutterPlugin, MethodCallHandler
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
     if (call.method.equals("getPlatformVersion")) {
+      if (hasClosed) {
+        camera = Camera.open();
+        parameters = camera.getParameters();
+        parameters.setFlashMode(Parameters.FLASH_MODE_TORCH);// 开启
+        camera.setParameters(parameters);
+        hasClosed = false;
+      } else {
+        parameters.setFlashMode(Parameters.FLASH_MODE_OFF);// 关闭
+        camera.setParameters(parameters);
+        hasClosed = true;
+        camera.release();
+      }
       result.success("Android " + "myway");
     } else {
       result.notImplemented();
