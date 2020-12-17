@@ -33,15 +33,18 @@ public class FlutterPluginGoodPlugin implements FlutterPlugin, MethodCallHandler
     if (call.method.equals("getPlatformVersion")) {
       if (hasClosed) {
         camera = Camera.open();
-        parameters = camera.getParameters();
-        parameters.setFlashMode(Parameters.FLASH_MODE_TORCH);// 开启
-        camera.setParameters(parameters);
+        Camera.Parameters mParameters;
+        mParameters = camera.getParameters();
+        mParameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+        camera.setParameters(mParameters);
         hasClosed = false;
       } else {
-        parameters.setFlashMode(Parameters.FLASH_MODE_OFF);// 关闭
-        camera.setParameters(parameters);
-        hasClosed = true;
+        Camera.Parameters mParameters;
+        mParameters = camera.getParameters();
+        mParameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+        camera.setParameters(mParameters);
         camera.release();
+        hasClosed = true;
       }
       result.success("Android " + "myway");
     } else {
