@@ -41,7 +41,7 @@ public class FlutterPluginGoodPlugin extends Application implements FlutterPlugi
       Log.d("android信息打印", String.valueOf(hasClosed));
       FlashlightUtils flashlight = new FlashlightUtils();
       if (hasClosed) {
-        flashlight.lightsOn(this);
+        flashlight.lightsOn(getApplicationContext());
 
         hasClosed = false;
       } else {
