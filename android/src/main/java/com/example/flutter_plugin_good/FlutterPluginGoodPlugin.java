@@ -3,6 +3,8 @@ package com.example.flutter_plugin_good;
 
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
@@ -31,6 +33,7 @@ public class FlutterPluginGoodPlugin implements FlutterPlugin, MethodCallHandler
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
     if (call.method.equals("getPlatformVersion")) {
+      Log.d("android信息打印", String.valueOf(hasClosed));
       if (hasClosed) {
         camera = Camera.open();
         Camera.Parameters mParameters;
